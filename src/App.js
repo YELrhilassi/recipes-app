@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import suggestions from "./autocompleteData";
+
 import GlobalStyle from "./GlobalStyle";
 import recipes from "./recipes";
 
