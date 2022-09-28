@@ -27,7 +27,13 @@ export default function SearchBar({ setRecipes = () => {} }) {
         onClick={() => setClose(false)}
       />
       <button onClick={handelSearch}>Search</button>
-      {query && !close && <Suggestions query={query} setQuery={setQuery} />}
+      {query && !close && (
+        <Suggestions
+          query={query}
+          searchValue={setQuery}
+          search={handelSearch}
+        />
+      )}
     </SearchDiv>
   );
 }
@@ -36,6 +42,7 @@ const SearchDiv = styled.div`
   display: flex;
   position: relative;
   width: 40%;
+  z-index: 999;
 
   input {
     width: 100%;

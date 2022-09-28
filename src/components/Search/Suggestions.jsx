@@ -5,7 +5,8 @@ const key = "1bd72bfafd4c4758add47c064850d45b";
 
 export default function Suggestions({
   query = undefined,
-  setQuery = () => {},
+  searchValue = () => {},
+  search = () => {},
 }) {
   const [suggestions, setSuggestions] = useState([]);
 
@@ -22,7 +23,13 @@ export default function Suggestions({
   return (
     <AutocompletDiv>
       {suggestions.map((suggestion) => (
-        <span key={suggestion.id} onClick={() => setQuery(suggestion.title)}>
+        <span
+          key={suggestion.id}
+          onClick={() => {
+            searchValue(suggestion.title);
+            search();
+          }}
+        >
           {suggestion.title}
         </span>
       ))}
