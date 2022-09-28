@@ -78,9 +78,10 @@ function IngredientList({ selected, data = [] }) {
 
   return (
     <IngredientListDiv>
-      {ingredients[0].sort().map((ingredient, index) => (
-        <div key={index}>{ingredient}</div>
-      ))}
+      {ingredients[0] &&
+        ingredients[0]
+          .sort()
+          .map((ingredient, index) => <div key={index}>{ingredient}</div>)}
     </IngredientListDiv>
   );
 }
