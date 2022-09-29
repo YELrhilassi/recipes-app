@@ -26,14 +26,17 @@ export default function SearchBar({ setRecipes = () => {} }) {
         onChange={(e) => setQuery(e.target.value)}
         onClick={() => setClose(false)}
       />
+
       <button onClick={handelSearch}>Search</button>
-      {query && !close && (
-        <Suggestions
-          query={query}
-          searchValue={setQuery}
-          search={handelSearch}
-        />
-      )}
+
+      {query &&
+        !close && ( //if there is something typed in, or heven't clicked on search
+          <Suggestions
+            query={query}
+            searchValue={setQuery}
+            search={handelSearch}
+          />
+        )}
     </SearchDiv>
   );
 }

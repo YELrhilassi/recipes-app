@@ -1,8 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
-import SearchBar from "../Search/SearchBar";
-
-// .split("&")[0]
 
 export default function Ingredients() {
   const [allData, setAllData] = useState([]);
@@ -35,6 +32,10 @@ export default function Ingredients() {
           <input type="text" />
         </div>
         <IngredientList selected={selected} data={allData} />
+        <div>
+          <div>Search based on selected ingredients</div>
+          <button>Search</button>
+        </div>
       </IngredientSelection>
     </IngredientSect>
   );
@@ -62,17 +63,10 @@ function Selector({ text, setSelected = () => {} }) {
 }
 
 function IngredientList({ selected, data = [] }) {
-  function filter() {
-    const selection = data.filter((_data) => _data.group_name == selected);
-    console.log(selection);
-    const ingredients = selection.map((t) => t.ingredients);
-
-    return ingredients;
-  }
-
   const ingredients = useMemo(() => {
     if (selected !== undefined) {
-      return filter();
+      const selection = data.filter((_data) => _data.group_name == selected);
+      return selection.map((t) => t.ingredients);
     }
   }, [selected]);
 
@@ -81,14 +75,20 @@ function IngredientList({ selected, data = [] }) {
       {ingredients[0] &&
         ingredients[0]
           .sort()
-          .map((ingredient, index) => <div key={index}>{ingredient}</div>)}
+          .map((ingredient, index) => (
+            <Ingredient key={index} ingredient={ingredient} />
+          ))}
     </IngredientListDiv>
   );
 }
 
-// ingredients[0]
-//   .sort()
-//   .map((ingredient, index) => <div key={index}>{ingredient}</div>);
+function Ingredient({ ingredient }) {
+  return (
+    <IngredientDiv onClick={() => console.log(ingredient)}>
+      {ingredient}
+    </IngredientDiv>
+  );
+}
 
 const IngredientSect = styled.section`
   display: flex;
@@ -154,12 +154,20 @@ const IngredientListDiv = styled.div`
   height: 40vw;
 
   overflow-y: scroll;
-  /* border: solid 1px red; */
+  border: solid 1px red;
+
   div {
     padding: 0.7rem 1rem;
     border: solid 1px red;
 
     font-weight: bold;
     text-transform: capitalize;
+  }
+`;
+
+const IngredientDiv = styled.div`
+  &:hover {
+    cursor: pointer;
+    background-color: rgb(225, 242, 254);
   }
 `;
