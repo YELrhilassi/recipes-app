@@ -4,9 +4,9 @@ import CategoryList from "./CategoryList";
 import IngredientList from "./IngredientlList";
 
 export default function Ingredients() {
-  const [allCategories, setAllCategories] = useState([]);
-  const [categories, setCategories] = useState({});
-  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [allData, setAllData] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState([]);
   const [savedIngredients, setSavedIngredients] = useState([]);
 
   useEffect(() => {
@@ -14,19 +14,14 @@ export default function Ingredients() {
     fetch("https://d1.supercook.com/dyn/lang_ings?lang=en")
       .then((res) => res.json())
       .then((data) => {
-        setAllCategories(
-          data.map((_data) => {
-            return {
-              categoryName: _data.group_name.split("&")[0],
-              ingredients: _data.ingredients,
-              showCategoryItems: false,
-            };
-          })
-        );
-      });
+        setCategories(data.map((_data) => _data.group_name));
+        return data;
+      })
+      .then((data) => setAllData(data));
 
     return () => {
-      setAllCategories([]);
+      setAllData([]);
+      setCategories([]);
     };
   }, []);
 
@@ -34,21 +29,32 @@ export default function Ingredients() {
     <IngredientSect>
       <LeftSidebar>
         <CategoryList
-          {...{ allCategories }} // it's the same as categories={categories}
-          {...{ selectedCategories, setSelectedCategories }}
+          {...{ categories }} // it's the same as categories={categories}
+          {...{ selectedCategory, setSelectedCategory }}
         />
       </LeftSidebar>
       <IngredientSelection>
+        <div>
+          <input type="text" />
+        </div>
+
         <IngredientList
           {...{
-            selectedCategories,
+            allData,
+            selectedCategory,
+            savedIngredients,
+            setSavedIngredients,
           }}
         />
 
         <div>
           <div>Search based on selected ingredients</div>
-          <button>Search</button>
-          <div>still not implemented</div>
+          <button onClick={() => console.log(savedIngredients)}>Search</button>
+          <div>
+            {savedIngredients.map((s, i) => (
+              <div key={i}>{s}</div>
+            ))}
+          </div>
         </div>
       </IngredientSelection>
     </IngredientSect>
